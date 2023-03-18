@@ -85,7 +85,9 @@
     btrfs-progs
     iotop
     bitwarden-cli
-    anydesk    
+    anydesk
+    git
+    git-secrets   
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

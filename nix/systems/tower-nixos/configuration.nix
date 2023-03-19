@@ -61,7 +61,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.jon = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "steam" "networkmanager" ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [
       firefox
       bitwarden
@@ -87,7 +87,14 @@
     bitwarden-cli
     anydesk
     git
-    git-secrets   
+    git-secrets
+    OVMF
+    virt-manager
+    qemu
+    pciutils
+    notepadqq
+    #iproute2
+    nmap
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -102,10 +109,11 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+  services.openssh.forwardX11 = true;
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [ 7070 ];
+  networking.firewall.allowedUDPPorts = [ 7070 ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
@@ -152,6 +160,69 @@
 
   # nvidia-drm.modeset=1 is required for some wayland compositors, e.g. sway
   hardware.nvidia.modesetting.enable = true;
+
+  ## Preparing for PCI passthrough ##
+  ## ... for now disabling the 2nd NVidia GPU. Ref: https://gist.github.com/RyanCargan/7326349eb>
+  ## Unplugged the 2nd nvidia GPU, was causing "no video boot fail" issues. Might be no good.
+
+  #boot.kernelParams = [ "intel_iommu=on" ];
+  #boot.kernelParams = [ "amd_iommu=on" ];
+
+  # These modules are required for PCI passthrough, and must come before early modesetting stuff
+  #boot.kernelModules = [ "vfio" "vfio_iommu_type1" "vfio_pci" "vfio_virqfd" ];
+  
+  # CHANGE: Don't forget to put your own PCI IDs here
+  #boot.extraModprobeConfig ="options vfio-pci ids=10de:1380,10de:0fbc";
+
+
+  ## NETWORKING ##
+  
+  networking = {
+    #Enable networkManager
+    #networkmanager.enable = true;
+
+    #defaultGateway = "10.84.1.254";
+    nameservers = [ "1.1.1.1" ];
+    
+    #firewall.enable = false;
+
+    vlans = {
+      #lan = {
+      #  interface = "enp5s0";
+      #  id = 84;
+      #};
+      guest = {
+        interface = "enp5s0";
+        id = 1;
+      };
+    };
+
+    interfaces = {
+      #enp1s0.useDHCP = true;
+      #enp3s0.useDHCP = false;
+      #enp4s0.useDHCP = false;
+      enp5s0 = {
+        useDHCP = true;
+      #  ipv4.addresses = [{
+      #      address = "10.84.1.8";
+      #      prefixLength = 24;
+      #  }];
+      };
+      #lan = {
+      #  ipv4.addresses = [{
+      #    address = "10.84.1.8";
+      #    prefixLength = 24;
+      #  }];
+      #};
+      guest = {
+        useDHCP = true;
+        #ipv4.addresses = [{
+        #  address = "192.168.1.253";
+        #  prefixLength = 24;
+        #}];
+      };
+    };
+  };
 
 }
 

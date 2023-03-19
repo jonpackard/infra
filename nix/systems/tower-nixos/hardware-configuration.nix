@@ -14,23 +14,20 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/88e1d8d6-f837-44a4-8ece-9bb1ee090e8d";
-      fsType = "ext4";
-      options = [
-        "noatime"
-        "nodiratime"
-        "discard"
-      ];
+    { device = "/dev/disk/by-uuid/3f68af6c-fd05-4547-86bd-7a0f47f468b5";
+      fsType = "btrfs";
+      options = [ "subvol=nixos-root" ];
+    };
+
+  fileSystems."/home" =
+    { device = "/dev/disk/by-uuid/3f68af6c-fd05-4547-86bd-7a0f47f468b5";
+      fsType = "btrfs";
+      options = [ "subvol=nixos-home" ];
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/5F6D-3F90";
+    { device = "/dev/disk/by-uuid/7BE5-22BA";
       fsType = "vfat";
-      options = [
-        "noatime"
-        "nodiratime"
-        "discard"
-      ];
     };
 
   swapDevices = [ ];
@@ -41,6 +38,7 @@
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.enp5s0.useDHCP = lib.mkDefault true;
+  # networking.interfaces.eth0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

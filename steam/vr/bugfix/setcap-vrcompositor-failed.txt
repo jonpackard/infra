@@ -1,0 +1,9 @@
+
+
+Source: https://github.com/NixOS/nixpkgs/issues/71554#issuecomment-791969690
+
+#this line not needed anymore?
+#ln -s $HOME/.local/share/Steam/steamapps/common/SteamVR/bin/linux64/vrcompositor $HOME/.local/share/Steam/steamapps/common/SteamVR/bin/linux64/vrcompositor-launcher
+
+setcap CAP_SYS_NICE+ep ~/.local/share/Steam/steamapps/common/SteamVR/bin/linux64/vrcompositor-launcher
+

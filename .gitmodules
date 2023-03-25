@@ -1,0 +1,3 @@
+[submodule "nix/systems/steamdeck-nixos/Jovian-NixOS"]
+	path = nix/systems/steamdeck-nixos/Jovian-NixOS
+	url = https://github.com/Jovian-Experiments/Jovian-NixOS

@@ -55,6 +55,10 @@
   # Enable sound.
   sound.enable = true;
   hardware.pulseaudio.enable = true;
+  hardware.pulseaudio.daemon.config = {
+    default-sample-rate = 48000; # SteamVR sound fix
+    alternate-sample-rate = 48000; # SteamVR sound fix
+  };
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
@@ -66,6 +70,7 @@
     packages = with pkgs; [
       firefox
       bitwarden
+      pcloud
     ];
   };
 

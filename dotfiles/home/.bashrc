@@ -1,4 +1,4 @@
-export PATH="~/.local/bin:$PATH"
+export PATH="${HOME}/.local/bin:$PATH"
 export infra="${HOME}/infra"
 
 alias "nixed=sudo nano /etc/nixos/configuration.nix" # Edit NixOS config

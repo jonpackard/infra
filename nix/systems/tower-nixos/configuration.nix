@@ -64,7 +64,7 @@
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.jon = {
+  users.users.jonathan = {
     isNormalUser = true;
     extraGroups = [ "wheel" "steam" "networkmanager" "docker" ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [

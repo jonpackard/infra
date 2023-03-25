@@ -194,6 +194,7 @@
   
   networking = {
     
+    hostName = "tower-nixos";
     enableIPv6 = false;
 
     #Enable networkManager

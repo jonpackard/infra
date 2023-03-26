@@ -15,6 +15,9 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Enable FUSE filesystems
+  boot.supportedFilesystems = [ "fuse" ];
+
   # networking.hostName = "nixos"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -71,6 +74,16 @@
       firefox
       bitwarden
       pcloud
+      remmina
+      notepadqq
+      anydesk
+      blender
+      freecad
+      openscad
+      inkscape
+      gimp
+      libreoffice
+      cryptomator
     ];
   };
 
@@ -81,29 +94,21 @@
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     tmux
-    #podman
-    #podman-tui
-    #podman-compose # need newer version from github
-    cni
-    cni-plugins
     btrfs-progs
     iotop
     bitwarden-cli
-    anydesk
     git
     git-secrets
-    OVMF
-    virt-manager
-    qemu
+    trufflehog
     pciutils
-    notepadqq
-    #iproute2
     nmap
     docker
     docker-compose
-    #remmina
     wol
     linuxKernel.packages.linux_libre.nvidia_x11_production_open
+    nethogs
+    appimage-run
+    nix-index
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -122,12 +127,6 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   services.openssh.forwardX11 = true;
-
-  # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 7070 8581 51489 ];
-  networking.firewall.allowedUDPPorts = [ 7070 8581 51489 ];
-  # Or disable the firewall altogether.
-  networking.firewall.enable = false;
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
@@ -194,6 +193,14 @@
   
   networking = {
     
+    # Open ports in the firewall.
+    # 7070 is for Anydesk
+    # 8581 is for homebridge... not needed with macvlan setup?
+    firewall.allowedTCPPorts = [ 7070 8581 ];
+    firewall.allowedUDPPorts = [ 7070 8581 ];
+    # Or disable the firewall altogether.
+    firewall.enable = true;
+
     hostName = "tower-nixos";
     enableIPv6 = false;
 
@@ -203,13 +210,7 @@
     #defaultGateway = "10.84.1.254";
     nameservers = [ "1.1.1.1" ];
     
-    #firewall.enable = false;
-
     vlans = {
-      #lan = {
-      #  interface = "enp5s0";
-      #  id = 84;
-      #};
       guest = {
         interface = "enp5s0";
         id = 1;
@@ -217,28 +218,11 @@
     };
 
     interfaces = {
-      #enp1s0.useDHCP = true;
-      #enp3s0.useDHCP = false;
-      #enp4s0.useDHCP = false;
       enp5s0 = {
         useDHCP = true;
-      #  ipv4.addresses = [{
-      #      address = "10.84.1.8";
-      #      prefixLength = 24;
-      #  }];
       };
-      #lan = {
-      #  ipv4.addresses = [{
-      #    address = "10.84.1.8";
-      #    prefixLength = 24;
-      #  }];
-      #};
       guest = {
         useDHCP = true;
-        #ipv4.addresses = [{
-        #  address = "192.168.1.253";
-        #  prefixLength = 24;
-        #}];
       };
     };
   };

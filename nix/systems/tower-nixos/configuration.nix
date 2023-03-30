@@ -4,6 +4,9 @@
 
 { config, pkgs, ... }:
 
+let
+  hostname = "tower-nixos";
+in 
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -19,17 +22,8 @@
   boot.supportedFilesystems = [ "fuse" ];
   boot.kernelModules = [ "fuse" ];
 
-  # networking.hostName = "nixos"; # Define your hostname.
-  # Pick only one of the below networking options.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  # networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
-
   # Set your time zone.
   time.timeZone = "America/New_York";
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -45,14 +39,6 @@
   # Enable KDE Plasma desktop environment
   services.xserver.desktopManager.plasma5.enable = true;
   
-
-  # Configure keymap in X11
-  # services.xserver.layout = "us";
-  # services.xserver.xkbOptions = {
-  #   "eurosign:e";
-  #   "caps:escape" # map caps to escape.
-  # };
-
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
@@ -63,9 +49,6 @@
     default-sample-rate = 48000; # SteamVR sound fix
     alternate-sample-rate = 48000; # SteamVR sound fix
   };
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.jonathan = {
@@ -202,7 +185,7 @@
     # Or disable the firewall altogether.
     firewall.enable = true;
 
-    hostName = "tower-nixos";
+    hostName = "${hostname}";
     enableIPv6 = false;
 
     #Enable networkManager
@@ -232,7 +215,7 @@
   services.rsyslogd.enable = true;
   services.rsyslogd.extraConfig =
     "
-    $LocalHostName nixos-tower
+    $LocalHostName ${hostname}
     $DefaultNetstreamDriverCAFile /root/papertrail-bundle.pem
     $ActionSendStreamDriver gtls
     $ActionSendStreamDriverMode 1
@@ -241,4 +224,3 @@
     *.*    @@logs4.papertrailapp.com:54259
    ";
 }
-

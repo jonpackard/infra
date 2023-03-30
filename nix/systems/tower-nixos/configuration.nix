@@ -17,6 +17,7 @@
 
   # Enable FUSE filesystems
   boot.supportedFilesystems = [ "fuse" ];
+  boot.kernelModules = [ "fuse" ];
 
   # networking.hostName = "nixos"; # Define your hostname.
   # Pick only one of the below networking options.
@@ -71,7 +72,6 @@
     isNormalUser = true;
     extraGroups = [ "wheel" "steam" "networkmanager" "docker" ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [
-      firefox
       bitwarden
       pcloud
       remmina
@@ -109,6 +109,7 @@
     nethogs
     appimage-run
     nix-index
+    firefox
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -227,5 +228,17 @@
     };
   };
 
+  # Set up rsyslogd to use Papertrail
+  services.rsyslogd.enable = true;
+  services.rsyslogd.extraConfig =
+    "
+    $LocalHostName nixos-tower
+    $DefaultNetstreamDriverCAFile /root/papertrail-bundle.pem
+    $ActionSendStreamDriver gtls
+    $ActionSendStreamDriverMode 1
+    $ActionSendStreamDriverAuthMode x509/name
+    $ActionSendStreamDriverPermittedPeer *.papertrailapp.com
+    *.*    @@logs4.papertrailapp.com:54259
+   ";
 }
 

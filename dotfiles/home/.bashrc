@@ -7,3 +7,4 @@ alias "synix=rsync -av /etc/nixos/ \"${infra}/nix/systems/$(hostname)/\"" # Clon
 alias "ll=ls -lha"
 alias "tmux=tmux a || tmux"
 alias "prepvr=sudo setcap CAP_SYS_NICE+ep ~/.local/share/Steam/steamapps/common/SteamVR/bin/linux64/vrcompositor-launcher"
+alias "xhostinit=xhost +si:localuser:$USER"

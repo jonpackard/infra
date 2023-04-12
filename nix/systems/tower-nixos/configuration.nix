@@ -67,6 +67,12 @@ in
       gimp
       libreoffice
       cryptomator
+      #ideamaker #broken package as of 29 Mar 2023
+      super-slicer-latest
+      #prusa-slicer # moved to distrobox
+      cura
+      discord
+      distrobox
     ];
   };
 
@@ -93,6 +99,9 @@ in
     appimage-run
     nix-index
     firefox
+    xorg.xhost # needed for distrobox
+    cinnamon.nemo
+    #distrobox # moved back to user, broke starting distrobox when I moved it to system
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

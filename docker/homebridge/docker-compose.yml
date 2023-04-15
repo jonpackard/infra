@@ -3,6 +3,9 @@ services:
   homebridge:
     image: oznu/homebridge:latest
     restart: always
+    network_mode: host
+    dns:
+      - 1.1.1.1
     volumes:
       - ./volumes/homebridge:/homebridge
     logging:
@@ -10,18 +13,3 @@ services:
       options:
         max-size: "10mb"
         max-file: "1"
-    networks:
-      dockervlan1:
-        ipv4_address: 192.168.1.88
-
-networks:
-  dockervlan1:
-    name: dockervlan1
-    driver: macvlan
-    driver_opts:
-      parent: guest
-    ipam:
-      config:
-        - subnet: "192.168.1.0/24"
-          ip_range: "192.168.1.64/26"
-          gateway: "192.168.1.1"

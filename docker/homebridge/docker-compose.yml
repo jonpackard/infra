@@ -6,6 +6,7 @@ services:
     network_mode: host
     dns:
       - 1.1.1.1
+      - 1.0.0.1
     volumes:
       - ./volumes/homebridge:/homebridge
     logging:
